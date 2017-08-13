@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack-dev-server --open",
     "build:prod": "webpack -p",
-    "test": "mocha --compilers js:babel-core/register --require ./test/setup.js"
+    "test": "mocha ./test/*.js  --compilers js:babel-core/register --require ./test/setup.js"
   },
   "author": "Kyle Grymonpre",
   "license": "ISC",
