@@ -4,11 +4,38 @@
         <link rel="stylesheet" href="dist/main.css"/>
     </head>
     <body>
+        <div class="game-message">
+            <div class="js-game-message game-message__text">
+                <br/>
+                <br/>
+            </div>
+        </div>
         <div class="tiles">
-            <div class="tile tile-1 js-tile-1"></div>
-            <div class="tile tile-2 js-tile-2"></div>
-            <div class="tile tile-3 js-tile-3"></div>
-            <div class="tile tile-4 js-tile-4"></div>
+            <div class="button-area">
+                <div class="button-area-inner">
+                    <div class="score js-score">0</div>
+                    <div class="button-area__buttons">
+                        <div class="button-group">
+                            <div class="button-wrapper">
+                                <div class="button button--reset js-reset-button"></div>
+                            </div>
+                            <br/>
+                            <span class="label label--reset">Reset</span>
+                        </div>
+                        <div class="button-group">
+                            <div class="button-wrapper">
+                                <div class="button button--strict-mode js-strict-mode"></div>
+                            </div>
+                            <br/>
+                            <span class="label label--strict-mode">Strict Mode</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="js-tile tile tile-1 js-tile-1"></div>
+            <div class="js-tile tile tile-2 js-tile-2"></div>
+            <div class="js-tile tile tile-3 js-tile-3"></div>
+            <div class="js-tile tile tile-4 js-tile-4"></div>
         </div>
 
         <script src="dist/bundle.js"></script>

@@ -1,11 +1,11 @@
 import $ from 'jquery';
 
-function Gameboard(game) {
+function Gameboard(gameInstance) {
     //Variables
     const DELAY_TIME = 500,
         CLICK_TIME = 120;
-    this.game = game;
-    // this.playerInputs = [];
+    let game = gameInstance;
+    let strictMode = game.isStrictMode();
 
     let isPatternPlaying = true;
     let previousAudio;
@@ -23,7 +23,11 @@ function Gameboard(game) {
     ];
 
     // Cache DOM
-    const tileElements = document.getElementsByClassName('tile');
+    const tileElements = document.getElementsByClassName('js-tile');
+    const resetButton = document.getElementsByClassName('js-reset-button')[0];
+    const strictModeButton = document.getElementsByClassName('js-strict-mode')[0];
+    const scoreElement = document.getElementsByClassName('js-score')[0];
+    const gameMessage = document.getElementsByClassName('js-game-message')[0];
 
     // Bind Events
     Array.from(tileElements).forEach((val, i) => {
@@ -31,12 +35,38 @@ function Gameboard(game) {
             this.handleTileClick(i);
         });
     });
+    resetButton.addEventListener('click', () => {
+        this.showMessage('Game reset<br/><br/>');
+        //make button 'press'
+        resetButton.classList.add('on');
+        setTimeout(() => {
+            resetButton.classList.remove('on');
+        }, 100);
+        //check strict mode
+        strictMode = strictModeButton.classList.contains('on');
+        //restart game after short delay
+        setTimeout(() => {
+            this.init();
+        }, DELAY_TIME);
+    });
+    strictModeButton.addEventListener('click', () => {
+        strictModeButton.classList.toggle('on');
+        strictMode = strictModeButton.classList.contains('on');
+        this.showMessage('Strict mode ' + (strictMode ? 'enabled' : 'disabled') + '<br/><br/>');
+    });
 
     //Functions
     this.init = () => {
-        this.game.resetGame();
-        this.game.extendPattern();
+        game.resetGame(strictMode);
+        scoreElement.innerHTML = game.getScore();
+        game.extendPattern();
         this.playPattern();
+    };
+    this.showMessage = (msg) => {
+        gameMessage.innerHTML = msg;
+        setTimeout(() => {
+            gameMessage.innerHTML = '<br/><br/>';
+        }, 1000);
     };
     this.handleTileClick = (i) => {
         //wait until pattern is done playing
@@ -47,14 +77,14 @@ function Gameboard(game) {
             if(correct) {
                 if(game.playerInputs.length === game.pattern.length) {
                     game.incrementScore();
-                    console.log('score: ' + game.getScore());
+                    scoreElement.innerHTML = game.getScore();
                     //player wins
                     if(game.getScore() === game.getWinningScore()) {
                         game.setIsGameOver(true);
-                        console.log('good job -- you win!');
+                        gameMessage.innerHTML = 'Congrats, you win!<br/>Click reset to play again';
                     } else {
                         //on to next pattern
-                        console.log('well done -- next pattern');
+                        this.showMessage('Well done!<br/>Next pattern...');
                         isPatternPlaying = true;
                         game.clearPlayerInputs();
                         game.extendPattern();
@@ -65,8 +95,15 @@ function Gameboard(game) {
                 }
             } else {
                 //incorrect input
-                console.log('incorrect input -- try again');
-                game.clearPlayerInputs();
+                if(strictMode) {
+                    this.showMessage('Incorrect input!<br/>Start from scratch');
+                    setTimeout(() => {
+                        this.init();
+                    }, 2 * DELAY_TIME);
+                } else {
+                    this.showMessage('Incorrect input!<br/>Try again');
+                    game.clearPlayerInputs();
+                }
             }
         }
     };
@@ -87,7 +124,7 @@ function Gameboard(game) {
 
     };
     this.playPattern = () => {
-        let pattern = this.game.pattern;
+        let pattern = game.pattern;
         // let difficulty = 1 - this.calculateDifficulty();
         // let delayTime = DELAY_TIME + difficulty * DELAY_TIME;
         let delayTime = DELAY_TIME;
@@ -103,7 +140,7 @@ function Gameboard(game) {
         }, delayTime * pattern.length);
     };
     this.calculateDifficulty = () => {
-        return this.game.pattern.length / this.game.getWinningScore();
+        return game.pattern.length / game.getWinningScore();
     };
 }
 

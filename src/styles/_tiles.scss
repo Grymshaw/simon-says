@@ -1,0 +1,43 @@
+.tiles {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 20px auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+.tile {
+    border: 2px solid black;
+    box-sizing: border-box;
+    display: block;
+    min-width: 50%;
+    min-height: 50%;
+}
+.tile-1 {
+    background-color: red;
+    border-radius: 50% 0 0 0;
+    &.hover {
+        background-color: lighten(red, 20);
+    }
+}
+.tile-2 {
+    background-color: gold;
+    border-radius: 0 50% 0 0;
+    &.hover {
+        background-color: lighten(gold, 20);
+    }
+}
+.tile-3 {
+    background-color: green;
+    border-radius: 0 0 0 50%;
+    &.hover {
+        background-color: lighten(green, 20);
+    }
+}
+.tile-4 {
+    background-color: blue;
+    border-radius: 0 0 50% 0;
+    &.hover {
+        background-color: lighten(blue, 20);
+    }
+}

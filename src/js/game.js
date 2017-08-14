@@ -1,19 +1,22 @@
 function Game(strictMode = false) {
     //Variables
     const NUMBER_OF_TILES = 4;
-    const WINNING_SCORE = 5;
+    const WINNING_SCORE = 20;
     let isGameOver = false;
     this.pattern = [];
     this.playerInputs = [];
     this.score = 0;
     this.strictMode = strictMode;
     //Methods
+    this.isStrictMode = () => {
+        return this.strictMode;
+    };
     this.checkInput = (input) => {
         if (this.pattern[this.playerInputs.length] === input) {
             this.playerInputs.push(input);
             return true;
         } else {
-            if(this.strictMode) {
+            if(this.isStrictMode()) {
                 isGameOver = true;
             }
             return false;
@@ -29,9 +32,7 @@ function Game(strictMode = false) {
         this.playerInputs = [];
     };
     this.extendPattern = () => {
-        console.log(this.pattern);
         this.pattern.push(this.randomInput());
-        console.log(this.pattern);
         return this.pattern;
     };
     this.randomInput = () => {
@@ -47,8 +48,8 @@ function Game(strictMode = false) {
         return WINNING_SCORE;
     };
     this.resetGame = (strictMode) => {
+        this.clearPlayerInputs();
         this.pattern = [];
-        this.playerInputs = [];
         isGameOver = false;
         this.score = 0;
         this.strictMode = strictMode;
