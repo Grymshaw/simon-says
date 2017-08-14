@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 function Gameboard(gameInstance) {
     //Variables
     const DELAY_TIME = 500,
